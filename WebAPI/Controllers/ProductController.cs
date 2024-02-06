@@ -21,6 +21,19 @@ public class ProductController : ControllerBase
         return _repo.ReadAll();
     }
 
+    // GET
+    [HttpGet("{category}")]
+    public IEnumerable<Product> GetProductsByCategory(string category)
+    {
+        return _repo.ReadAllByCategory(category);
+    }
+    
+    [HttpGet("item/{id}")]
+    public Product GetProductById(int id)
+    {
+        return _repo.GetProductById(id);
+    }
+    
     [HttpPost]
     public void AddProduct(Product product)
     {

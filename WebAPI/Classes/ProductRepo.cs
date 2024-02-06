@@ -20,6 +20,18 @@ public class ProductRepo : IProductRepo
         return _context.Products.ToList();
     }
 
+    public List<Product> ReadAllByCategory(string category)
+    {
+        return _context.Products
+            .Where(p => p.Category.ToLower().Replace(" ", "") == category.ToLower())
+            .ToList();
+    }
+
+    public Product GetProductById(int id)
+    {
+        return _context.Products.Where(p => p.Id == id).SingleOrDefault();
+    }
+
     public Product Read(int id)
     {
         throw new NotImplementedException();
