@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebAPI.Classes;
 
@@ -26,6 +27,18 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.MapPost("/logout", async (SignInManager<IdentityUser> signInManager,
+        [FromBody]object empty) =>
+    {
+        if (empty != null)
+        {
+            await signInManager.SignOutAsync();
+            return Results.Ok();
+        }
+        return Results.Unauthorized();
+    })
+    .RequireAuthorization();
 
 app.MapIdentityApi<IdentityUser>();
 app.UseHttpsRedirection();
