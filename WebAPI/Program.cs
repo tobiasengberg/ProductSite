@@ -18,6 +18,7 @@ builder.Services.AddDbContext<ProductContext>(options =>
 builder.Services.AddIdentityApiEndpoints<IdentityUser>()
     .AddEntityFrameworkStores<ProductContext>();
 builder.Services.AddScoped<IProductRepo, ProductRepo>();
+builder.Services.AddScoped<IHomeService, HomeService>();
 
 var app = builder.Build();
 
