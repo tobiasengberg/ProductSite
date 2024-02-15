@@ -15,10 +15,11 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ProductContext>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
         new MySqlServerVersion(new Version(6, 0, 0))));
-builder.Services.AddIdentityApiEndpoints<IdentityUser>()
+builder.Services.AddIdentityApiEndpoints<Customer>()
     .AddEntityFrameworkStores<ProductContext>();
 builder.Services.AddScoped<IProductRepo, ProductRepo>();
 builder.Services.AddScoped<IHomeService, HomeService>();
+builder.Services.AddScoped<ICustomerService, CustomerService>();
 
 var app = builder.Build();
 
@@ -29,7 +30,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapPost("/logout", async (SignInManager<IdentityUser> signInManager,
+app.MapPost("/logout", async (SignInManager<Customer> signInManager,
         [FromBody]object empty) =>
     {
         if (empty != null)
@@ -41,7 +42,7 @@ app.MapPost("/logout", async (SignInManager<IdentityUser> signInManager,
     })
     .RequireAuthorization();
 
-app.MapIdentityApi<IdentityUser>();
+app.MapIdentityApi<Customer>();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
