@@ -11,5 +11,8 @@ public class ProductContext : IdentityDbContext
     }
 
     public DbSet<Product> Products { get; set; }
+    public DbSet<Customer> Customers { get; set; }
+    public DbSet<Campaigne> Campaigns { get; set; }
+    public DbSet<CustomerProfile> CustomerProfiles { get; set; }
 
 }

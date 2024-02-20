@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebAPI.Classes;
 
@@ -10,9 +11,11 @@ using WebAPI.Classes;
 namespace WebAPI.Migrations
 {
     [DbContext(typeof(ProductContext))]
-    partial class ProductContextModelSnapshot : ModelSnapshot
+    [Migration("20240220063925_customUser")]
+    partial class customUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -80,11 +83,6 @@ namespace WebAPI.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(13)
-                        .HasColumnType("varchar(13)");
-
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("varchar(256)");
@@ -135,10 +133,6 @@ namespace WebAPI.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
-
-                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -220,185 +214,6 @@ namespace WebAPI.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("WebAPI.Classes.Account", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("AdressId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("EMailPreferencesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AdressId");
-
-                    b.HasIndex("EMailPreferencesId");
-
-                    b.ToTable("Account");
-                });
-
-            modelBuilder.Entity("WebAPI.Classes.Adress", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Street")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("ZipCode")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Adress");
-                });
-
-            modelBuilder.Entity("WebAPI.Classes.Campaigne", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Campaigns");
-                });
-
-            modelBuilder.Entity("WebAPI.Classes.CustomerProfile", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("AccountId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PaymentOptions")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AccountId");
-
-                    b.ToTable("CustomerProfiles");
-                });
-
-            modelBuilder.Entity("WebAPI.Classes.EMailPreferences", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Campaigns")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<bool>("NewsLetter")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<bool>("Shipping")
-                        .HasColumnType("tinyint(1)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("EMailPreferences");
-                });
-
-            modelBuilder.Entity("WebAPI.Classes.Invoice", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CustomerProfileId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Paid")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<decimal>("TotalAmmount")
-                        .HasColumnType("decimal(65,30)");
-
-                    b.Property<decimal>("VAT")
-                        .HasColumnType("decimal(65,30)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerProfileId");
-
-                    b.ToTable("Invoice");
-                });
-
-            modelBuilder.Entity("WebAPI.Classes.Order", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int?>("CustomerProfileId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("OrderDate")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<decimal>("TotalPayment")
-                        .HasColumnType("decimal(65,30)");
-
-                    b.Property<decimal>("VAT")
-                        .HasColumnType("decimal(65,30)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerProfileId");
-
-                    b.ToTable("Order");
-                });
-
-            modelBuilder.Entity("WebAPI.Classes.OrderProduct", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(65,30)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.ToTable("OrderProduct");
-                });
-
             modelBuilder.Entity("WebAPI.Classes.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -423,18 +238,6 @@ namespace WebAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Products");
-                });
-
-            modelBuilder.Entity("WebAPI.Classes.Customer", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
-
-                    b.Property<int>("CustomerProfileId")
-                        .HasColumnType("int");
-
-                    b.HasIndex("CustomerProfileId");
-
-                    b.HasDiscriminator().HasValue("Customer");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -486,80 +289,6 @@ namespace WebAPI.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("WebAPI.Classes.Account", b =>
-                {
-                    b.HasOne("WebAPI.Classes.Adress", "Adress")
-                        .WithMany()
-                        .HasForeignKey("AdressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("WebAPI.Classes.EMailPreferences", "EMailPreferences")
-                        .WithMany()
-                        .HasForeignKey("EMailPreferencesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Adress");
-
-                    b.Navigation("EMailPreferences");
-                });
-
-            modelBuilder.Entity("WebAPI.Classes.CustomerProfile", b =>
-                {
-                    b.HasOne("WebAPI.Classes.Account", "Account")
-                        .WithMany()
-                        .HasForeignKey("AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Account");
-                });
-
-            modelBuilder.Entity("WebAPI.Classes.Invoice", b =>
-                {
-                    b.HasOne("WebAPI.Classes.CustomerProfile", null)
-                        .WithMany("Invoices")
-                        .HasForeignKey("CustomerProfileId");
-                });
-
-            modelBuilder.Entity("WebAPI.Classes.Order", b =>
-                {
-                    b.HasOne("WebAPI.Classes.CustomerProfile", null)
-                        .WithMany("Orders")
-                        .HasForeignKey("CustomerProfileId");
-                });
-
-            modelBuilder.Entity("WebAPI.Classes.OrderProduct", b =>
-                {
-                    b.HasOne("WebAPI.Classes.Order", null)
-                        .WithMany("Products")
-                        .HasForeignKey("OrderId");
-                });
-
-            modelBuilder.Entity("WebAPI.Classes.Customer", b =>
-                {
-                    b.HasOne("WebAPI.Classes.CustomerProfile", "CustomerProfile")
-                        .WithMany()
-                        .HasForeignKey("CustomerProfileId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CustomerProfile");
-                });
-
-            modelBuilder.Entity("WebAPI.Classes.CustomerProfile", b =>
-                {
-                    b.Navigation("Invoices");
-
-                    b.Navigation("Orders");
-                });
-
-            modelBuilder.Entity("WebAPI.Classes.Order", b =>
-                {
-                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }
